@@ -1,39 +1,37 @@
-class UserController{
-    
-    constructor(){
+
+
+const User = require('./user');
+
+class UserController {
+    constructor() {
         this.users = [];
     }
-    
-    getUsers(){
+
+    getUsers() {
         return this.users;
     }
 
-    add(user){
-        this.users.push(user);
+    add(user) {
+        if (!this.users.some(u => u.id === user.id)) {
+            this.users.push(user);
+            return true;
+        }
+        return false;
     }
 
-    remove(user){
-        this.users = this.users.filter(function(ele){
-            return ele != user; 
-        });
+    remove(user) {
+        const initialLength = this.users.length;
+        this.users = this.users.filter(u => u.id !== user.id);
+        return this.users.length < initialLength;
     }
 
-    findByEmail(email){
-        for (let i = 0; i < this.users.length; i++) { 
-            if(this.users[i].email === email)
-                return this.users[i];
-        } 
+    findByEmail(email) {
+        return this.users.find(u => u.email === email);
     }
 
-    findById(id){
-        for (let i = 0; i < this.users.length; i++) { 
-            if(this.users[i].id === id)
-                return this.users[i];
-        } 
+    findById(id) {
+        return this.users.find(u => u.id === id);
     }
-
-
 }
-
 
 module.exports = UserController;
